@@ -1,0 +1,24 @@
+na tabela de lexemas posso criar objecto lexema que vai guardar o nome do lexema, a classificacao e a linha em que se encontra. e depois apresentar a tabela de lexemas.
+
+- verificar se as variaves estao sendo declaradas dentro do escopo
+- verificar a compatibilidade de tipos na inicializacao de variaveis.
+
+public class Batatas extends JFrame{}
+public class Batatas{}
+public final class Batatas{}
+public abstract class Batatas{}
+
+class Nome {
+ public int a;
+ private long b;
+ Nome(){}
+}
+
+Nome x = Nome();
+x.a;
+
+
+imprimir o programa a ser analisado
+imprimir a tabela de lexemas
+imprimir erros
+colocar nome dos estudantes no codigo.
