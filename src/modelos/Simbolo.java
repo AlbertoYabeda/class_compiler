@@ -7,7 +7,7 @@ public class Simbolo extends Lexema{
 
     public Simbolo(){}
 
-    public Simbolo(String classificacao, String nome, String linha){
+    public Simbolo(String classificacao, String nome, int linha){
         super(nome,linha);
         this.classificacao = classificacao;
     }

@@ -3,7 +3,6 @@ package Lexador;
 import constantes.Tipos;
 import modelos.Identificadores;
 import modelos.Simbolo;
-import org.w3c.dom.ls.LSOutput;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,18 +15,25 @@ public class AnalisadorLexico {
     int count_pal_reser = 0, num_erros = 0, num_linhas = 1;
     Tipos tipo;
     ArrayList<String> palavras_reservadas;
+    ArrayList<String> classific;
     private final static Map<String, String> simbolos_reservados = new HashMap<String, String>();
     ArrayList<Simbolo> simbolos = new ArrayList<Simbolo>();
     ArrayList<Identificadores> identificadores = new ArrayList<Identificadores>();
 
     AnalisadorLexico(){
         palavras_reservadas = new ArrayList<String>();
+        classific = new ArrayList<>();
         tipo = new Tipos();
         palavras_reservadas.add(0,tipo.PUBLIC);
         palavras_reservadas.add(1,tipo.PRIVATE);
         palavras_reservadas.add(2,tipo.CLASS_WORD);
         palavras_reservadas.add(3,tipo.INT);
         palavras_reservadas.add(4,tipo.LONG);
+        classific.add(0,"PR - visibilidade");
+        classific.add(1,"PR - visibilidade");
+        classific.add(2,"PR - class");
+        classific.add(3,"PR - tipo primitivo");
+        classific.add(4,"PR - tipo primitivo");
 
         simbolos_reservados.put("(",tipo.DELIMITADOR_INICIO_PARAMETRO);
         simbolos_reservados.put(")", tipo.DELIMITADOR_FIM_PARAMETRO);
@@ -117,7 +123,6 @@ public class AnalisadorLexico {
 
         while(cont < arrayPlug.length){
             filledArrayList.add(cont,arrayPlug[cont]);
-            //System.out.println("here");
             cont++;
         }
         return filledArrayList;
@@ -125,15 +130,29 @@ public class AnalisadorLexico {
 
     public void imprimirLexema(String lexema){
         if(palavras_reservadas.contains(lexema))
-            System.out.println(lexema);
+            criarPRSource(lexema);
         else if (simbolos_reservados.containsKey(lexema))
             System.out.println(lexema);
         else
             System.out.println("nao e palavra reservada mas ok "+lexema);
     }
 
-    public void criaIdentificador(String nome){
+    // cria palavra reservada fornecida pelo programador que coincide com a lista de palavras do programa
+    public void criarPRSource(String nome){
+        String classificacao = "";
+        Simbolo s = new Simbolo();
 
+        for(int i=0; i < palavras_reservadas.size(); i++){
+            if (nome.equals(palavras_reservadas.get(i)))
+              classificacao = classific.get(i);
+        }
+
+        s.setNome(nome);
+        s.setLinha(num_linhas);
+        s.setClassificacao(classificacao);
+        System.out.println("criou objecto");
+        simbolos.add(s);
+        System.out.println(s.toString());
     }
 
     public static void main(String[] args) {

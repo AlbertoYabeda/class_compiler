@@ -4,11 +4,11 @@ import constantes.Tipos;
 
 public class Lexema {
     String nome;
-    String linha;
+    int linha;
 
     public Lexema() {}
 
-    public Lexema(String nome, String linha) {
+    public Lexema(String nome, int linha) {
         this.nome = nome;
         this.linha = linha;
     }
@@ -21,11 +21,11 @@ public class Lexema {
         this.nome = nome;
     }
 
-    public String getLinha() {
+    public int getLinha() {
         return linha;
     }
 
-    public void setLinha(String linha) {
+    public void setLinha(int linha) {
         this.linha = linha;
     }
 

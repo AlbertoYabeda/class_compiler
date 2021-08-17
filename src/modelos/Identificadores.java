@@ -9,7 +9,7 @@ public class Identificadores extends Lexema{
 
     Identificadores(){}
 
-    public Identificadores(String memoria, String valor, Tipos tipo, String nome, String linha) {
+    public Identificadores(String memoria, String valor, Tipos tipo, String nome, int linha) {
         super(nome,linha);
         this.memoria = memoria;
         this.tipo = tipo;
