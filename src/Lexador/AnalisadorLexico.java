@@ -76,6 +76,7 @@ public class AnalisadorLexico {
     }
 
     public void imprimeCodigoFonte(String codigoFonte){
+        System.out.println();
         System.out.println(codigoFonte);
     }
 
@@ -150,10 +151,10 @@ public class AnalisadorLexico {
     //selecionar a ultima palavra reservada, pegar o nome e anexar ao tipo de memoria
     public void encontrarClassficIdentificador(String nome){
         String memoria="", valor="", tipo="";
-        boolean isExistente = false;
+        int isExistente = 0;
         isExistente = verIdExiste(nome);
 
-        if(!isExistente) {
+        if(isExistente == -1) {
             if (ultimaPR.equals("int") || ultimaPR.equals("long")) {
                 memoria = "primitiva";
                 valor = 0 + "";
@@ -162,29 +163,24 @@ public class AnalisadorLexico {
                 valor = "---";
             }
 
-            for (int i = 0; i < palavras_reservadas.size(); i++) {
-                if (ultimaPR.equals(palavras_reservadas.get(i)))
-                    tipo = classificPRs.get(i);
-            }
-
             criarIndentificador(memoria, valor, nome, ultimaPR);
             criaSimbolo(ultimaPR, nome);
+        }else{
+            String classificExistent = listaIdentificadores.get(isExistente).getTipo();
+            criaSimbolo(classificExistent,nome);
         }
     }
 
-    public boolean verIdExiste(String nome){
-        boolean isExistente = false;
+    public int verIdExiste(String nome){
+        int isExistente = -1;
         for (byte i =0; i < listaIdentificadores.size(); i++){
             if(nome.equals(listaIdentificadores.get(i).getNome()))
-                isExistente = true;
+                isExistente = i;
         }
         return isExistente;
     }
 
     public void criarIndentificador(String memoria, String valor, String nome, String tipo){
-
-
-        if(!isExistente) {
             Identificadores identificadores = new Identificadores();
             identificadores.setNome(nome);
             identificadores.setMemoria(memoria);
@@ -192,8 +188,6 @@ public class AnalisadorLexico {
             identificadores.setValor(valor);
             identificadores.setLinha(num_linhas);
             listaIdentificadores.add(identificadores);
-            System.out.println(identificadores);
-        }
     }
 
     // cria palavra reservada fornecida pelo programador que coincide com a lista de palavras do programa
@@ -222,7 +216,6 @@ public class AnalisadorLexico {
         s.setLinha(num_linhas);
         s.setClassificacao(classificacao);
         simbolos.add(s);
-        //System.out.println(s.toString());
     }
 
     public void verSimbolos(){
@@ -237,12 +230,22 @@ public class AnalisadorLexico {
         }
     }
 
-    // criar tabela de identificadores
-    //se escrever mal palavra class, adicionar mesmo assim a a tabela de simbolos mas como identificador e nao como palavra reservada
+    public void verIdentificadores(){
+        System.out.println("      ______________Tabela de Identificadores_______________" +
+                "\n---------------------------------------------------------------------" +
+                "\n|      Nome     |     Tipo     |   Valor   |   Memoria   |   linha  |" +
+                "\n---------------------------------------------------------------------"
+        );
+        for(Identificadores ident : listaIdentificadores){
+            System.out.println(ident);
+        }
+        System.out.println();
+    }
 
     public static void main(String[] args) {
         AnalisadorLexico al = new AnalisadorLexico();
         al.GestorFicheiro();
+        al.verIdentificadores();
         al.verSimbolos();
     }
 }

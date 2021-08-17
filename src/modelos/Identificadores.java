@@ -42,12 +42,19 @@ public class Identificadores extends Lexema{
 
     @Override
     public String toString() {
-        return "Identificadores{" +
-                "memoria='" + memoria + '\'' +
-                ", valor='" + valor + '\'' +
-                ", nome='" + nome + '\'' +
-                ", tipo=" + tipo +
-                ", linha='" + linha + '\'' +
-                '}';
+        String s = "";
+        // TODO Auto-generated method stub
+        s += s.format("%s%14s%2s%13s%2s%11s%s%13s%s%7s%s", "|",nome,"|",tipo,"|",valor,"|",memoria,"|",linha+"\t","|");
+        s += "\n--------------------------------------------------------------------";
+        return s;
     }
+//    public String toString() {
+//        return "Identificadores{" +
+//                "memoria='" + memoria + '\'' +
+//                ", valor='" + valor + '\'' +
+//                ", nome='" + nome + '\'' +
+//                ", tipo=" + tipo +
+//                ", linha='" + linha + '\'' +
+//                '}';
+//    }
 }
