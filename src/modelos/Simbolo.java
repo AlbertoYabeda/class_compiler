@@ -7,8 +7,8 @@ public class Simbolo extends Lexema{
 
     public Simbolo(){}
 
-    public Simbolo(String classificacao, Tipos tipo, String nome, String linha){
-        super(nome,tipo,linha);
+    public Simbolo(String classificacao, String nome, String linha){
+        super(nome,linha);
         this.classificacao = classificacao;
     }
 
@@ -24,7 +24,6 @@ public class Simbolo extends Lexema{
     public String toString() {
         return "Simbolo{" +
                 "nome='" + nome + '\'' +
-                ", tipo=" + tipo +
                 ", linha='" + linha + '\'' +
                 ", classificacao='" + classificacao + '\'' +
                 '}';

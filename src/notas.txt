@@ -1,0 +1,7 @@
+class Nome {
+ public int a;
+ private long b;
+ Nome(){}
+}
+
+

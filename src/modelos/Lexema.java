@@ -4,14 +4,12 @@ import constantes.Tipos;
 
 public class Lexema {
     String nome;
-    Tipos tipo;
     String linha;
 
     public Lexema() {}
 
-    public Lexema(String nome, Tipos tipo, String linha) {
+    public Lexema(String nome, String linha) {
         this.nome = nome;
-        this.tipo = tipo;
         this.linha = linha;
     }
 
@@ -35,7 +33,6 @@ public class Lexema {
     public String toString() {
         return "Lexema{" +
                 "nome='" + nome + '\'' +
-                ", tipo=" + tipo +
                 ", linha='" + linha + '\'' +
                 '}';
     }
