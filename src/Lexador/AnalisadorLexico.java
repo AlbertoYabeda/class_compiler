@@ -3,6 +3,7 @@ package Lexador;
 import constantes.Tipos;
 import modelos.Identificadores;
 import modelos.Simbolo;
+import org.w3c.dom.ls.LSOutput;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,6 +54,7 @@ public class AnalisadorLexico {
             String data = myReader.nextLine();
             copia_do_programa += data + "\n";
             analizaLinha(data);
+            num_linhas++;
         }
         myReader.close();
         imprimeCodigoFonte(copia_do_programa);
@@ -73,6 +75,55 @@ public class AnalisadorLexico {
     }
 
     public void analisarLexema(String lexema){
+        String [] splittedLexema = lexema.split("[){;(}]");
+        ArrayList<String> cadeia_lex = readyArrayList(splittedLexema);
+        char simbol=' ';
+
+        for(int i=0; i<lexema.length(); i++) {
+           if (lexema.charAt(i) == '{') {
+               simbol = '{';
+               cadeia_lex.add(simbol + "");
+           }
+
+           if (lexema.charAt(i) == '}') {
+               simbol = '}';
+               cadeia_lex.add(simbol + "");
+           }
+
+           if (lexema.charAt(i) == ';') {
+               simbol = ';';
+               cadeia_lex.add(simbol + "");
+           }
+
+           if (lexema.charAt(i) == ')') {
+               simbol = ')';
+               cadeia_lex.add(simbol + "");
+           }
+
+           if (lexema.charAt(i) == '(') {
+               simbol = '(';
+               cadeia_lex.add(simbol + "");
+           }
+        }
+
+       for(int i = 0; i < cadeia_lex.size(); i++){
+           imprimirLexema(cadeia_lex.get(i));
+       }
+    }
+
+    public ArrayList<String> readyArrayList(String [] arrayPlug){
+        ArrayList<String> filledArrayList = new ArrayList<>();
+        int cont = 0;
+
+        while(cont < arrayPlug.length){
+            filledArrayList.add(cont,arrayPlug[cont]);
+            //System.out.println("here");
+            cont++;
+        }
+        return filledArrayList;
+    }
+
+    public void imprimirLexema(String lexema){
         if(palavras_reservadas.contains(lexema))
             System.out.println(lexema);
         else if (simbolos_reservados.containsKey(lexema))
