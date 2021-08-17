@@ -5,11 +5,11 @@ import constantes.Tipos;
 public class Identificadores extends Lexema{
     String memoria;
     String valor;
-    Tipos tipo;
+    String tipo;
 
-    Identificadores(){}
+    public Identificadores(){}
 
-    public Identificadores(String memoria, String valor, Tipos tipo, String nome, int linha) {
+    public Identificadores(String memoria, String valor, String tipo, String nome, int linha) {
         super(nome,linha);
         this.memoria = memoria;
         this.tipo = tipo;
@@ -32,11 +32,11 @@ public class Identificadores extends Lexema{
         this.valor = valor;
     }
 
-    public Tipos getTipo() {
+    public String getTipo() {
         return tipo;
     }
 
-    public void setTipo(Tipos tipo) {
+    public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 

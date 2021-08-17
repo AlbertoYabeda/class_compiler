@@ -15,25 +15,28 @@ public class AnalisadorLexico {
     int count_pal_reser = 0, num_erros = 0, num_linhas = 1;
     Tipos tipo;
     ArrayList<String> palavras_reservadas;
-    ArrayList<String> classific;
+    ArrayList<String> classificPRs;
+    ArrayList<String> classificaSimbolos;
     private final static Map<String, String> simbolos_reservados = new HashMap<String, String>();
     ArrayList<Simbolo> simbolos = new ArrayList<Simbolo>();
-    ArrayList<Identificadores> identificadores = new ArrayList<Identificadores>();
+    ArrayList<Identificadores> listaIdentificadores = new ArrayList<Identificadores>();
+    String ultimaPR = "";
 
     AnalisadorLexico(){
         palavras_reservadas = new ArrayList<String>();
-        classific = new ArrayList<>();
+        classificPRs = new ArrayList<>();
+        classificaSimbolos = new ArrayList<>();
         tipo = new Tipos();
         palavras_reservadas.add(0,tipo.PUBLIC);
         palavras_reservadas.add(1,tipo.PRIVATE);
         palavras_reservadas.add(2,tipo.CLASS_WORD);
         palavras_reservadas.add(3,tipo.INT);
         palavras_reservadas.add(4,tipo.LONG);
-        classific.add(0,"PR - visibilidade");
-        classific.add(1,"PR - visibilidade");
-        classific.add(2,"PR - class");
-        classific.add(3,"PR - tipo primitivo");
-        classific.add(4,"PR - tipo primitivo");
+        classificPRs.add(0,"PR - visibilidade");
+        classificPRs.add(1,"PR - visibilidade");
+        classificPRs.add(2,"PR - class");
+        classificPRs.add(3,"PR - tipo primitivo");
+        classificPRs.add(4,"PR - tipo primitivo");
 
         simbolos_reservados.put("(",tipo.DELIMITADOR_INICIO_PARAMETRO);
         simbolos_reservados.put(")", tipo.DELIMITADOR_FIM_PARAMETRO);
@@ -41,6 +44,12 @@ public class AnalisadorLexico {
         simbolos_reservados.put("}",tipo.FIM_ESCOPO);
         simbolos_reservados.put(";",tipo.FIM_DE_INSTRUCAO);
         simbolos_reservados.put(".",tipo.PONTO);
+        classificaSimbolos.add(0,"Simbolo - inicio de parametro");
+        classificaSimbolos.add(1,"Simbolo - fim de parametro");
+        classificaSimbolos.add(2,"Simbolo - inicio de escopo");
+        classificaSimbolos.add(3,"Simbolo - fim de escopo");
+        classificaSimbolos.add(4,"Simbolo - fim de instrucao");
+        classificaSimbolos.add(5,"Simbolo - de acesso a objecto");
     }
 
     public void GestorFicheiro(){
@@ -130,33 +139,110 @@ public class AnalisadorLexico {
 
     public void imprimirLexema(String lexema){
         if(palavras_reservadas.contains(lexema))
-            criarPRSource(lexema);
+            encontrarClassificPalavra(lexema);
         else if (simbolos_reservados.containsKey(lexema))
-            System.out.println(lexema);
+            encontrarClassificSimbolo(lexema);
         else
-            System.out.println("nao e palavra reservada mas ok "+lexema);
+            encontrarClassficIdentificador(lexema);
+    }
+
+    //verficar a ultima palavra reservada antes do actual identificador
+    //selecionar a ultima palavra reservada, pegar o nome e anexar ao tipo de memoria
+    public void encontrarClassficIdentificador(String nome){
+        String memoria="", valor="", tipo="";
+        boolean isExistente = false;
+        isExistente = verIdExiste(nome);
+
+        if(!isExistente) {
+            if (ultimaPR.equals("int") || ultimaPR.equals("long")) {
+                memoria = "primitiva";
+                valor = 0 + "";
+            } else {
+                memoria = "---";
+                valor = "---";
+            }
+
+            for (int i = 0; i < palavras_reservadas.size(); i++) {
+                if (ultimaPR.equals(palavras_reservadas.get(i)))
+                    tipo = classificPRs.get(i);
+            }
+
+            criarIndentificador(memoria, valor, nome, ultimaPR);
+            criaSimbolo(ultimaPR, nome);
+        }
+    }
+
+    public boolean verIdExiste(String nome){
+        boolean isExistente = false;
+        for (byte i =0; i < listaIdentificadores.size(); i++){
+            if(nome.equals(listaIdentificadores.get(i).getNome()))
+                isExistente = true;
+        }
+        return isExistente;
+    }
+
+    public void criarIndentificador(String memoria, String valor, String nome, String tipo){
+
+
+        if(!isExistente) {
+            Identificadores identificadores = new Identificadores();
+            identificadores.setNome(nome);
+            identificadores.setMemoria(memoria);
+            identificadores.setTipo(tipo);
+            identificadores.setValor(valor);
+            identificadores.setLinha(num_linhas);
+            listaIdentificadores.add(identificadores);
+            System.out.println(identificadores);
+        }
     }
 
     // cria palavra reservada fornecida pelo programador que coincide com a lista de palavras do programa
-    public void criarPRSource(String nome){
+    public void encontrarClassificPalavra(String nome){
         String classificacao = "";
-        Simbolo s = new Simbolo();
-
         for(int i=0; i < palavras_reservadas.size(); i++){
             if (nome.equals(palavras_reservadas.get(i)))
-              classificacao = classific.get(i);
+              classificacao = classificPRs.get(i);
         }
+        ultimaPR = nome;
+        criaSimbolo(classificacao, nome);
+    }
 
+    public void encontrarClassificSimbolo(String simbolo){
+        String classificacao = "";
+        for (Map.Entry<String,String> entry : simbolos_reservados.entrySet())
+            if (entry.getKey().equals(simbolo)){
+                classificacao = entry.getValue();
+            }
+        criaSimbolo(classificacao, simbolo);
+    }
+
+    public void criaSimbolo(String classificacao, String nome){
+        Simbolo s = new Simbolo();
         s.setNome(nome);
         s.setLinha(num_linhas);
         s.setClassificacao(classificacao);
-        System.out.println("criou objecto");
         simbolos.add(s);
-        System.out.println(s.toString());
+        //System.out.println(s.toString());
     }
+
+    public void verSimbolos(){
+        System.out.println("        ______________Tabela de Simbolos_______________________" +
+                "\n----------------------------------------------------------------------------" +
+                "\n|        Nome        |                Classificacao                |  linha |" +
+                "\n----------------------------------------------------------------------------"
+        );
+
+        for(Simbolo simb : simbolos){
+            System.out.println(simb);
+        }
+    }
+
+    // criar tabela de identificadores
+    //se escrever mal palavra class, adicionar mesmo assim a a tabela de simbolos mas como identificador e nao como palavra reservada
 
     public static void main(String[] args) {
         AnalisadorLexico al = new AnalisadorLexico();
         al.GestorFicheiro();
+        al.verSimbolos();
     }
 }

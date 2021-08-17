@@ -22,10 +22,17 @@ public class Simbolo extends Lexema{
 
     @Override
     public String toString() {
-        return "Simbolo{" +
-                "nome='" + nome + '\'' +
-                ", linha='" + linha + '\'' +
-                ", classificacao='" + classificacao + '\'' +
-                '}';
+        String s = "";
+        // TODO Auto-generated method stub
+        s += s.format("%s%13s%2s%44s%2s%8d%s", "|",nome+"\t\t","|",classificacao,"|",linha,"|");
+        s += "\n----------------------------------------------------------------------------";
+        return s;
     }
+//    public String toString() {
+//        return "Simbolo{" +
+//                "nome='" + nome + '\'' +
+//                ", linha='" + linha + '\'' +
+//                ", classificacao='" + classificacao + '\'' +
+//                '}';
+//    }
 }

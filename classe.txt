@@ -1,5 +1,5 @@
-class Nome {
+class Teste {
  public int a;
  private long b;
- Nome(){}
+ Teste(){}
 }
