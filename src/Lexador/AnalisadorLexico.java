@@ -35,42 +35,58 @@ public class AnalisadorLexico {
         simbolos_reservados.put(";",tipo.FIM_DE_INSTRUCAO);
         simbolos_reservados.put(".",tipo.PONTO);
     }
-//
-//    public void visualizaClasse(){
-//        File myObj = new File("classe.txt");
-//        try {
-//            Scanner myReader = new Scanner(myObj);
-//            while (myReader.hasNextLine()) {
-//                String data = myReader.nextLine();
-//                //System.out.println(data);
-//                analizaLinha(data);
-//            }
-//            myReader.close();
-//        } catch (FileNotFoundException e) {
-//            System.out.println("Ficheiro nao foi encontrado.");
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public void analizaLinha(String linha){
-//        Scanner scanner = new Scanner(linha);
-//        String lexema = "";
-//        while(scanner.hasNext()){
-//            lexema = scanner.next();
-//            if(palavras_reservadas.contains(lexema))
-//                System.out.println(lexema);
-//            else
-//                System.out.println("nao e palavra reservada");
-//        }
-//        scanner.close();
-//    }
-//
-//    public void criaIdentificador(String nome){
-//
-//    }
+
+    public void GestorFicheiro(){
+        try {
+            buscaFicheiro();
+        } catch (FileNotFoundException e) {
+            System.out.println("Ficheiro nao foi encontrado.");
+            e.printStackTrace();
+        }
+    }
+
+    public void buscaFicheiro() throws FileNotFoundException{
+        File myObj = new File("classe.txt");
+        Scanner myReader = new Scanner(myObj);
+        String copia_do_programa = "";
+        while (myReader.hasNextLine()) {
+            String data = myReader.nextLine();
+            copia_do_programa += data + "\n";
+            analizaLinha(data);
+        }
+        myReader.close();
+        imprimeCodigoFonte(copia_do_programa);
+    }
+
+    public void imprimeCodigoFonte(String codigoFonte){
+        System.out.println(codigoFonte);
+    }
+
+    public void analizaLinha(String linha){
+        Scanner scanner = new Scanner(linha);
+        String lexema = "";
+        while(scanner.hasNext()){
+            lexema = scanner.next();
+            analisarLexema(lexema);
+        }
+        scanner.close();
+    }
+
+    public void analisarLexema(String lexema){
+        if(palavras_reservadas.contains(lexema))
+            System.out.println(lexema);
+        else if (simbolos_reservados.containsKey(lexema))
+            System.out.println(lexema);
+        else
+            System.out.println("nao e palavra reservada mas ok "+lexema);
+    }
+
+    public void criaIdentificador(String nome){
+
+    }
 
     public static void main(String[] args) {
         AnalisadorLexico al = new AnalisadorLexico();
-        al.visualizaClasse();
+        al.GestorFicheiro();
     }
 }
