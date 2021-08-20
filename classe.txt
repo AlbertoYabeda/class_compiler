@@ -1,5 +1,5 @@
 class Teste {
- public int a;
- private long b;
- Teste(){}
+    public int a;
+    public long b;
+    Teste(){}
 }

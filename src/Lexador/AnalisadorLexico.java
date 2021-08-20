@@ -18,11 +18,12 @@ public class AnalisadorLexico {
     ArrayList<String> classificPRs;
     ArrayList<String> classificaSimbolos;
     private final static Map<String, String> simbolos_reservados = new HashMap<String, String>();
-    ArrayList<Simbolo> simbolos = new ArrayList<Simbolo>();
+    public static ArrayList<Simbolo> simbolos = new ArrayList<Simbolo>();
     ArrayList<Identificadores> listaIdentificadores = new ArrayList<Identificadores>();
     String ultimaPR = "";
+    public static String copia_programa = "";
 
-    AnalisadorLexico(){
+    public AnalisadorLexico(){
         palavras_reservadas = new ArrayList<String>();
         classificPRs = new ArrayList<>();
         classificaSimbolos = new ArrayList<>();
@@ -64,15 +65,14 @@ public class AnalisadorLexico {
     public void buscaFicheiro() throws FileNotFoundException{
         File myObj = new File("classe.txt");
         Scanner myReader = new Scanner(myObj);
-        String copia_do_programa = "";
         while (myReader.hasNextLine()) {
             String data = myReader.nextLine();
-            copia_do_programa += data + "\n";
+            copia_programa += data + "\n";
             analizaLinha(data);
             num_linhas++;
         }
         myReader.close();
-        imprimeCodigoFonte(copia_do_programa);
+        imprimeCodigoFonte(copia_programa);
     }
 
     public void imprimeCodigoFonte(String codigoFonte){
@@ -242,10 +242,10 @@ public class AnalisadorLexico {
         System.out.println();
     }
 
-    public static void main(String[] args) {
-        AnalisadorLexico al = new AnalisadorLexico();
-        al.GestorFicheiro();
-        al.verIdentificadores();
-        al.verSimbolos();
-    }
+//    public static void main(String[] args) {
+//        AnalisadorLexico al = new AnalisadorLexico();
+//        al.GestorFicheiro();
+//        al.verIdentificadores();
+//        al.verSimbolos();
+//    }
 }
