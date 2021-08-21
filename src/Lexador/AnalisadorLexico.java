@@ -182,13 +182,13 @@ public class AnalisadorLexico {
             criarIndentificador(memoria, valor, nome, ultimaPR);
             criaSimbolo(ultimaPR, nome);
         }else{
-            if(memoria.equals("primitiva")) {
-                erros += "O identificador " + nome + " na linha ->" + num_linhas + "ja existe\n";
+            if(!listaIdentificadores.get(isExistente).getTipo().equals("class")) {
+                erros += "O identificador " + nome + " na linha -> " + num_linhas + " ja existe\n";
                 num_erros++;
                 tem_erro_lexico = true;
+            }
                 String classificExistent = listaIdentificadores.get(isExistente).getTipo();
                 criaSimbolo(classificExistent, nome);
-            }
         }
     }
 
