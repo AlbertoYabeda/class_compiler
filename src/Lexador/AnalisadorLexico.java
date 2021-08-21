@@ -51,14 +51,7 @@ public class AnalisadorLexico {
         simbolos_reservados.put("=",tipo.ATRIBUICAO);
         simbolos_reservados.put(",",tipo.VIRGULA);
         simbolos_reservados.put("^[0-9]",tipo.CONSTANTE_NUM);
-        classificaSimbolos.add(0,"Simbolo - inicio de parametro");
-        classificaSimbolos.add(1,"Simbolo - fim de parametro");
-        classificaSimbolos.add(2,"Simbolo - inicio de escopo");
-        classificaSimbolos.add(3,"Simbolo - fim de escopo");
-        classificaSimbolos.add(4,"Simbolo - fim de instrucao");
-        classificaSimbolos.add(5,"Simbolo - de acesso a objecto");
-        classificaSimbolos.add(6,"Simbolo - de atribuicao");
-        classificaSimbolos.add(7,"Simbolo - separador de elementos");
+
     }
 
     public void GestorFicheiro(){
@@ -189,11 +182,13 @@ public class AnalisadorLexico {
             criarIndentificador(memoria, valor, nome, ultimaPR);
             criaSimbolo(ultimaPR, nome);
         }else{
-            erros += "O identificador "+nome+" na linha ->"+num_linhas+"ja existe\n";
-            num_erros++;
-            tem_erro_lexico = true;
-            String classificExistent = listaIdentificadores.get(isExistente).getTipo();
-            criaSimbolo(classificExistent,nome);
+            if(memoria.equals("primitiva")) {
+                erros += "O identificador " + nome + " na linha ->" + num_linhas + "ja existe\n";
+                num_erros++;
+                tem_erro_lexico = true;
+                String classificExistent = listaIdentificadores.get(isExistente).getTipo();
+                criaSimbolo(classificExistent, nome);
+            }
         }
     }
 

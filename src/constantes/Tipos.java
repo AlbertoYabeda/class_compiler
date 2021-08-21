@@ -3,8 +3,6 @@ package constantes;
 import modelos.Identificadores;
 
 public class Tipos {
-    public Identificadores IDENTIFICADORES;
-
     public final String INICIO_ESCOPO = "simbolo de inicio de escopo";
     public final String FIM_ESCOPO = "simbolo de fim de escopo";
     public final String DELIMITADOR_INICIO_PARAMETRO = "simbolo delimitador de inicio de parametros";
