@@ -45,12 +45,14 @@ public class AnalisadorLexico {
         simbolos_reservados.put("}",tipo.FIM_ESCOPO);
         simbolos_reservados.put(";",tipo.FIM_DE_INSTRUCAO);
         simbolos_reservados.put(".",tipo.PONTO);
+        simbolos_reservados.put("=",tipo.ATRIBUICAO);
         classificaSimbolos.add(0,"Simbolo - inicio de parametro");
         classificaSimbolos.add(1,"Simbolo - fim de parametro");
         classificaSimbolos.add(2,"Simbolo - inicio de escopo");
         classificaSimbolos.add(3,"Simbolo - fim de escopo");
         classificaSimbolos.add(4,"Simbolo - fim de instrucao");
         classificaSimbolos.add(5,"Simbolo - de acesso a objecto");
+        classificaSimbolos.add(6,"Simbolo - de atribuicao");
     }
 
     public void GestorFicheiro(){
@@ -120,6 +122,11 @@ public class AnalisadorLexico {
                simbol = '(';
                cadeia_lex.add(simbol + "");
            }
+
+           if (lexema.charAt(i) == '='){
+               simbol = '=';
+               cadeia_lex.add(simbol + "");
+           }
         }
 
        for(int i = 0; i < cadeia_lex.size(); i++){
@@ -150,9 +157,8 @@ public class AnalisadorLexico {
     //verficar a ultima palavra reservada antes do actual identificador
     //selecionar a ultima palavra reservada, pegar o nome e anexar ao tipo de memoria
     public void encontrarClassficIdentificador(String nome){
-        String memoria="", valor="", tipo="";
-        int isExistente = 0;
-        isExistente = verIdExiste(nome);
+        String memoria="", valor="";
+        int isExistente =  verIdExiste(nome);
 
         if(isExistente == -1) {
             if (ultimaPR.equals("int") || ultimaPR.equals("long")) {

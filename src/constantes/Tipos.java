@@ -12,6 +12,7 @@ public class Tipos {
     public final String FIM_DE_INSTRUCAO = "Simbolo de fim da instrucao";
     public final String PONTO = "Simbolo de acesso a objecto";
     public final String CONSTANTE_NUMERICA = "constante numerica";
+    public final String ATRIBUICAO = "constante de atribuicao";
 
     public final String CLASS_WORD = "class";
     public final String PRIVATE = "private";

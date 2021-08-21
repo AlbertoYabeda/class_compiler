@@ -34,18 +34,6 @@ public class AnalisadorSintactico {
         }
     }
 
-    public Simbolo indiceDaPalavra(String palavra){
-        int indice = -1;
-        Simbolo simboloModelo = new Simbolo();
-        if(AnalisadorLexico.simbolos.contains(palavra)) {
-            indice = AnalisadorLexico.simbolos.indexOf(palavra);
-            System.out.println(indice);
-            simboloModelo = AnalisadorLexico.simbolos.get(indice);
-        }
-        return simboloModelo;
-    }
-
-
     public static void main(String[] args) {
         AnalisadorLexico al = new AnalisadorLexico();
         AnalisadorSintactico as = new AnalisadorSintactico();
@@ -53,5 +41,5 @@ public class AnalisadorSintactico {
         al.verIdentificadores();
         al.verSimbolos();
         as.validarFrase();
-        }
+    }
 }
