@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class AnalisadorLexico {
-    int count_pal_reser = 0, num_erros = 0, num_linhas = 1;
+    int num_linhas = 1;
     Tipos tipo;
     ArrayList<String> palavras_reservadas;
     ArrayList<String> classificPRs;
@@ -20,8 +20,11 @@ public class AnalisadorLexico {
     private final static Map<String, String> simbolos_reservados = new HashMap<String, String>();
     public static ArrayList<Simbolo> simbolos = new ArrayList<Simbolo>();
     ArrayList<Identificadores> listaIdentificadores = new ArrayList<Identificadores>();
+    ArrayList<String> cadeia_lex = new ArrayList<>();
     String ultimaPR = "";
-    public static String copia_programa = "";
+    public static String copia_programa = "", erros="--- ERRO LEXICO ---\n";
+    public static int num_erros = 0;
+    public static boolean tem_erro_lexico = false;
 
     public AnalisadorLexico(){
         palavras_reservadas = new ArrayList<String>();
@@ -46,6 +49,8 @@ public class AnalisadorLexico {
         simbolos_reservados.put(";",tipo.FIM_DE_INSTRUCAO);
         simbolos_reservados.put(".",tipo.PONTO);
         simbolos_reservados.put("=",tipo.ATRIBUICAO);
+        simbolos_reservados.put(",",tipo.VIRGULA);
+        simbolos_reservados.put("^[0-9]",tipo.CONSTANTE_NUM);
         classificaSimbolos.add(0,"Simbolo - inicio de parametro");
         classificaSimbolos.add(1,"Simbolo - fim de parametro");
         classificaSimbolos.add(2,"Simbolo - inicio de escopo");
@@ -53,6 +58,7 @@ public class AnalisadorLexico {
         classificaSimbolos.add(4,"Simbolo - fim de instrucao");
         classificaSimbolos.add(5,"Simbolo - de acesso a objecto");
         classificaSimbolos.add(6,"Simbolo - de atribuicao");
+        classificaSimbolos.add(7,"Simbolo - separador de elementos");
     }
 
     public void GestorFicheiro(){
@@ -93,8 +99,8 @@ public class AnalisadorLexico {
     }
 
     public void analisarLexema(String lexema){
-        String [] splittedLexema = lexema.split("[){;(}]");
-        ArrayList<String> cadeia_lex = readyArrayList(splittedLexema);
+        String [] splittedLexema = lexema.split("[){;(},=]");
+        cadeia_lex = readyArrayList(splittedLexema);
         char simbol=' ';
 
         for(int i=0; i<lexema.length(); i++) {
@@ -127,10 +133,15 @@ public class AnalisadorLexico {
                simbol = '=';
                cadeia_lex.add(simbol + "");
            }
+
+            if (lexema.charAt(i) == ','){
+                simbol = ',';
+                cadeia_lex.add(simbol + "");
+            }
         }
 
        for(int i = 0; i < cadeia_lex.size(); i++){
-           imprimirLexema(cadeia_lex.get(i));
+           tipoLexema(cadeia_lex.get(i));
        }
     }
 
@@ -145,17 +156,24 @@ public class AnalisadorLexico {
         return filledArrayList;
     }
 
-    public void imprimirLexema(String lexema){
+    public void tipoLexema(String lexema){
         if(palavras_reservadas.contains(lexema))
             encontrarClassificPalavra(lexema);
         else if (simbolos_reservados.containsKey(lexema))
             encontrarClassificSimbolo(lexema);
-        else
-            encontrarClassficIdentificador(lexema);
+        else if (!lexema.chars().allMatch( Character::isDigit ))
+                encontrarClassficIdentificador(lexema);
+            else {
+                criaSimbolo(tipo.CONSTANTE_NUM, lexema);
+                atribuirValor(lexema);
+            }
     }
 
-    //verficar a ultima palavra reservada antes do actual identificador
-    //selecionar a ultima palavra reservada, pegar o nome e anexar ao tipo de memoria
+    public void atribuirValor (String valor){
+        listaIdentificadores.get(listaIdentificadores.size()-1).setValor(valor);
+    }
+
+
     public void encontrarClassficIdentificador(String nome){
         String memoria="", valor="";
         int isExistente =  verIdExiste(nome);
@@ -168,10 +186,12 @@ public class AnalisadorLexico {
                 memoria = "---";
                 valor = "---";
             }
-
             criarIndentificador(memoria, valor, nome, ultimaPR);
             criaSimbolo(ultimaPR, nome);
         }else{
+            erros += "O identificador "+nome+" na linha ->"+num_linhas+"ja existe\n";
+            num_erros++;
+            tem_erro_lexico = true;
             String classificExistent = listaIdentificadores.get(isExistente).getTipo();
             criaSimbolo(classificExistent,nome);
         }

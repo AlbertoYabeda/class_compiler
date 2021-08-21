@@ -1,5 +1,5 @@
 class Teste {
-    public int a;
-    public long b;
+    public long a = 2, b = 5;
+    public int z;
     Teste(){}
 }

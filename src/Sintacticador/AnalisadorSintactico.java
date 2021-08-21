@@ -29,8 +29,11 @@ public class AnalisadorSintactico {
             System.out.println("Programa Terminado!");
             if (ValidarFrase.hasError)
                 ValidarFrase.verErros();
+            if(AnalisadorLexico.tem_erro_lexico)
+                System.out.println(AnalisadorLexico.erros);
         }else {
             ValidarFrase.verErros();
+            System.out.println(AnalisadorLexico.erros);
         }
     }
 

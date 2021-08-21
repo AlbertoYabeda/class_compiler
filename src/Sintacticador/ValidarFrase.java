@@ -1,5 +1,6 @@
 package Sintacticador;
 
+import Lexador.AnalisadorLexico;
 import modelos.Simbolo;
 
 import java.util.ArrayList;
@@ -105,8 +106,8 @@ public class ValidarFrase {
                                                     estado = 8;
                                                 else if (nome.equals(";"))
                                                     estado = 5;
-//                                                else if(nome.equals("="))
-//                                                    estado = 15;
+                                                else if(nome.equals("="))
+                                                    estado = 15;
                                                 else{
                                                     erros += "ERRO Sintatico- Esperava encontrar (,) ou (;) linha - " + linha + "\n";
                                                     num_erros++;
@@ -158,15 +159,15 @@ public class ValidarFrase {
                                                                         hasError = true;
                                                                     }
                                                                 }else{
-//                                                                    if(estado == 15){
-//                                                                        if (nome.matches("^[0-9]"))
-//                                                                            estado = 8;
-//                                                                        else{
-//                                                                            erros += "ERRO Semantico - valor deve ser inteiro. linha - " + linha + "\n";
-//                                                                            num_erros++;
-//                                                                            hasError = true;
-//                                                                        }
-//                                                                    }
+                                                                    if(estado == 15){
+                                                                        if (nome.chars().allMatch(Character::isDigit))
+                                                                            estado = 9;
+                                                                        else{
+                                                                            erros += "ERRO Semantico - valor deve ser inteiro. linha - " + linha + "\n";
+                                                                            num_erros++;
+                                                                            hasError = true;
+                                                                        }
+                                                                    }
                                                                 }
                                                             }
                                                         }
@@ -185,7 +186,7 @@ public class ValidarFrase {
     public static void verErros(){
         System.out.println(erros);
         System.out.println();
-        System.out.println("Programa terminou com "+ValidarFrase.num_erros);
+        System.out.println("Programa terminou com "+(ValidarFrase.num_erros + AnalisadorLexico.num_erros)+" ERROS");
     }
 
     public void verLexemas(){
