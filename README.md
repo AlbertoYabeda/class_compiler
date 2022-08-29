@@ -1,19 +1,19 @@
-University project that simulates class declaration syntax compiler work in java.
+<b>University project that simulates class declaration syntax compiler work in java.</b>
 
-The compiler should be able to validate the following lines of code.
+The compiler should be able to validate the following lines of code.<br>
 
 public class example{}
+<br>
+class Nome {<br>
+ public int a;<br>
+ private long b;<br>
+ Nome(){}<br>
+}<br>
 
-class Nome {
- public int a;
- private long b;
- Nome(){}
-}
+Nome x = Nome();<br>
+x.a;<br>
 
-Nome x = Nome();
-x.a;
+<b>future implementations:</b><br>
 
-future implementations:
-
-[x] public final class Lion extends Animal{}
+[x] public final class Lion extends Animal{} <br>
 [x] public abstract class Animal{}
